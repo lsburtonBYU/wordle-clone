@@ -43,8 +43,23 @@ async function handleKey(key) {
   }
 }
 
+// return the number of times letter appears in array
+const countOccurrences = (array, letter) =>
+  array.reduce((count, current) => (current === letter ? count + 1 : count), 0);
+
 //TODO: color key pressed
+//TODO: check letter count before adding wrong location
 function showResult(buffer) {
+  const checked = [];
+  buffer.forEach(letter => {
+    if (!checked.includes(letter)) {
+      console.log(
+        `I see ${countOccurrences(buffer, letter)} occurrences of ${letter}`
+      );
+      checked.push(letter);
+    }
+  });
+
   const classes = [];
   console.log(`you guessed: ${buffer.join("")} for ${word}`);
   buffer.forEach((letter, index) => {
