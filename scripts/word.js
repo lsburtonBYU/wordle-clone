@@ -48,15 +48,13 @@ const countOccurrences = (array, letter) =>
 //TODO: color key pressed
 //TODO: check letter count before adding wrong location
 function showResult(buffer) {
-  const checked = [];
+  const letterCount = {};
   buffer.forEach(letter => {
-    if (!checked.includes(letter)) {
-      console.log(
-        `I see ${countOccurrences(buffer, letter)} occurrences of ${letter}`
-      );
-      checked.push(letter);
+    if (!letterCount.hasOwnProperty(letter)) {
+      letterCount[letter] = countOccurrences(buffer, letter);
     }
   });
+  console.log("letter occurrences", letterCount);
 
   const classes = [];
   console.log(`you guessed: ${buffer.join("")} for ${word}`);
