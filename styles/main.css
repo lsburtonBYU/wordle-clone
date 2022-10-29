@@ -1,0 +1,79 @@
+:root {
+  --color-correct: #68a561;
+  --color-incorrect: #85898c;
+  --color-wrong-location: #c5ab60;
+  --dimensions: 4rem;
+  --key-height: 2rem;
+  --key-width: 2rem;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Inter, sans-serif;
+}
+
+.game {
+  border: 1px solid #000;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.2rem;
+
+  padding: 1rem;
+}
+
+.tiles > div {
+  border: 1px solid #000;
+  aspect-ratio: 1 / 1;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.tiles > div.correct {
+  color: #fff;
+  background-color: var(--color-correct);
+}
+
+.tiles > div.incorrect {
+  color: #fff;
+  background-color: var(--color-incorrect);
+}
+
+.tiles > div.wrong-location {
+  color: #fff;
+  background-color: var(--color-wrong-location);
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.keyboard .row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+}
+
+.keyboard .row > div {
+  flex: 1 0 0.8rem;
+  min-width: 0.8rem;
+  border: 1px solid #000;
+  border-radius: 3px;
+  padding: 1rem 0.6rem;
+  font-size: 0.9rem;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+}
