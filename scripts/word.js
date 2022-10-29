@@ -1,12 +1,10 @@
-const keys = document.querySelectorAll(".keyboard > .row > div");
-const tiles = document.querySelectorAll(".tiles > div");
-const tileArray = Array.from(tiles);
 const WORD_LENGTH = 5;
 const MAX_ROW_INDEX = 5;
-DEFAULT_WORD = "hello";
-const RANDOM_URL =
-  "https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&minCorpusCount=10000&minLength=5&maxLength=5&includePartOfSpeech=noun,verb,adjective&api_key=";
+const DEFAULT_WORD = "hello";
 const API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+
+const keys = document.querySelectorAll(".keyboard > .row > div");
+const tiles = Array.from(document.querySelectorAll(".tiles > div"));
 
 let currentRow = 0;
 let currentColumn = 0;
@@ -74,12 +72,8 @@ function showResult(buffer) {
 
   classes.forEach((className, index) => {
     const offset = currentRow * WORD_LENGTH + index;
-    tileArray[offset].classList.add(className);
+    tiles[offset].classList.add(className);
   });
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function isValidWord(word) {
@@ -93,52 +87,25 @@ function setTileText(key) {
   tiles[index].innerText = key.toUpperCase();
 }
 
+function start(list) {
+  //TODO: remove loader
+  const randIndex = Math.random() * list.length;
+  word = list[Math.floor(randIndex)];
+  console.log(`starting game with: ${word}`);
+}
+
 keys.forEach(key => {
   key.addEventListener("click", () => {
     handleKey(key.textContent);
   });
 });
 
-async function getAPIKey() {
-  return fetch("./scripts/api-key.json")
-    .then(response => response.json())
-    .then(data => data.API_KEY)
-    .catch(error => console.log("couldn't load api key", error));
-}
-
-async function callAPIRandomWord(apiKey) {
-  return fetch(RANDOM_URL + apiKey)
-    .then(response => {
-      if (response.status == 200) return response.json();
-      else return { word: DEFAULT_WORD };
-    })
-    .then(data => data.word)
-    .catch(() => {
-      word: DEFAULT_WORD;
-    });
-}
-
-async function generateWord() {
-  const apiKey = await getAPIKey();
-  let attempts = 5;
-  word = DEFAULT_WORD;
-
-  while (attempts > 0) {
-    word = await callAPIRandomWord(apiKey);
-    if (/[a-z]{5}/.test(word)) {
-      console.log(`valid word: ${word}`);
-      attempts = 0;
-    } else {
-      console.log(`attempt: ${attempts}: invalid word: ${word}`);
-      await sleep(1000);
-      attempts--;
-    }
-  }
-  start();
-}
-
-function start() {
-  console.log("starting game");
-}
-
-generateWord();
+// TODO: add loader
+fetch("./assets/target-words.txt")
+  .then(response => response.text())
+  .then(data => data.split(/\r?\n/))
+  .then(list => start(list))
+  .catch(error => {
+    console.log("can't load words", error);
+    return [DEFAULT_WORD];
+  });
