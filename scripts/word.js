@@ -3,7 +3,7 @@ const MAX_ROW_INDEX = 5;
 const DEFAULT_WORD = "hello";
 const API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
-const keys = document.querySelectorAll(".keyboard > .row > div");
+const keys = Array.from(document.querySelectorAll(".keyboard > .row > div"));
 const tiles = Array.from(document.querySelectorAll(".tiles > div"));
 
 let currentRow = 0;
@@ -57,14 +57,18 @@ function showResult(buffer) {
   console.log("letter occurrences", letterCount);
 
   const classes = [];
+  const keyClasses = {};
   console.log(`you guessed: ${buffer.join("")} for ${word}`);
   buffer.forEach((letter, index) => {
     if (letter === word[index]) {
       classes.push("correct");
+      keyClasses[letter] = "correct";
     } else if (word.includes(letter)) {
       classes.push("wrong-location");
+      keyClasses[letter] = "wrong-location";
     } else {
       classes.push("incorrect");
+      keyClasses[letter] = "incorrect";
     }
   });
 
@@ -72,6 +76,12 @@ function showResult(buffer) {
     const offset = currentRow * WORD_LENGTH + index;
     tiles[offset].classList.add(className);
   });
+
+  for (const prop in keyClasses) {
+    const keyElement = document.querySelector(`[data-key="${prop}"]`);
+    keyElement.removeAttribute("class");
+    keyElement.classList.add(keyClasses[prop]);
+  }
 }
 
 async function isValidWord(word) {

@@ -37,19 +37,19 @@ body {
   font-weight: 700;
 }
 
-.tiles > div.correct {
-  color: #fff;
-  background-color: var(--color-correct);
-}
-
-.tiles > div.incorrect {
+.incorrect {
   color: #fff;
   background-color: var(--color-incorrect);
 }
 
-.tiles > div.wrong-location {
+.wrong-location {
   color: #fff;
   background-color: var(--color-wrong-location);
+}
+
+.correct {
+  color: #fff;
+  background-color: var(--color-correct);
 }
 
 .keyboard {
