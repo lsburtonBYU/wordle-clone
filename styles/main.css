@@ -77,3 +77,9 @@ body {
   user-select: none;
   cursor: pointer;
 }
+
+.keyboard .row .enter {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  flex-basis: auto;
+}

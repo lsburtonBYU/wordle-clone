@@ -12,7 +12,7 @@ let word;
 const buffer = [];
 
 async function handleKey(key) {
-  if (key === "↴") {
+  if (key === "enter") {
     if (currentColumn === WORD_LENGTH) {
       const guess = buffer.join("");
       if (await isValidWord(guess)) {
@@ -79,8 +79,10 @@ function showResult(buffer) {
 
   for (const prop in keyClasses) {
     const keyElement = document.querySelector(`[data-key="${prop}"]`);
-    keyElement.removeAttribute("class");
-    keyElement.classList.add(keyClasses[prop]);
+    if (!keyElement.classList.contains("correct")) {
+      keyElement.removeAttribute("class");
+      keyElement.classList.add(keyClasses[prop]);
+    }
   }
 }
 
@@ -110,10 +112,9 @@ keys.forEach(key => {
 
 // TODO: add loader
 fetch("./assets/target-words.txt")
-  .then(response => response.text())
+  .then(response => (response.ok ? response.text() : DEFAULT_WORD))
   .then(data => data.split(/\r?\n/))
   .then(list => start(list))
   .catch(error => {
-    console.log("can't load words", error);
-    return [DEFAULT_WORD];
+    console.log("network issues", error);
   });
